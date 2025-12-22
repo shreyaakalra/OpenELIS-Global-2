@@ -2080,7 +2080,8 @@ module.exports = defineConfig({
 
 ### Playwright E2E Testing
 
-**Reference**: [Playwright Best Practices Guide](.specify/guides/playwright-best-practices.md)
+**Reference**:
+[Playwright Best Practices Guide](.specify/guides/playwright-best-practices.md)
 for comprehensive patterns and examples.
 
 Playwright is the recommended E2E testing framework for new test development. It
@@ -2088,13 +2089,13 @@ offers modern async/await patterns, auto-waiting, and better debugging tools.
 
 #### When to Use Playwright vs Cypress
 
-| Scenario | Recommended | Reason |
-|----------|-------------|--------|
-| New E2E tests | **Playwright** | Modern API, better debugging |
-| Existing Cypress tests | Cypress | Don't migrate unnecessarily |
-| Complex multi-tab/window | **Playwright** | Native support |
-| Visual regression | **Playwright** | Built-in screenshot comparison |
-| API testing alongside UI | **Playwright** | First-class request API |
+| Scenario                 | Recommended    | Reason                         |
+| ------------------------ | -------------- | ------------------------------ |
+| New E2E tests            | **Playwright** | Modern API, better debugging   |
+| Existing Cypress tests   | Cypress        | Don't migrate unnecessarily    |
+| Complex multi-tab/window | **Playwright** | Native support                 |
+| Visual regression        | **Playwright** | Built-in screenshot comparison |
+| API testing alongside UI | **Playwright** | First-class request API        |
 
 #### Quick Start
 
@@ -2122,15 +2123,15 @@ Authenticate once, reuse session for all tests:
 
 ```typescript
 // playwright/tests/auth.setup.ts
-import { test as setup, expect } from '@playwright/test';
+import { test as setup, expect } from "@playwright/test";
 
-setup('authenticate', async ({ page }) => {
-  await page.goto('/');
-  await page.getByLabel('Username').fill('admin');
-  await page.getByLabel('Password').fill('adminADMIN!');
-  await page.getByRole('button', { name: 'Login' }).click();
+setup("authenticate", async ({ page }) => {
+  await page.goto("/");
+  await page.getByLabel("Username").fill("admin");
+  await page.getByLabel("Password").fill("adminADMIN!");
+  await page.getByRole("button", { name: "Login" }).click();
   await expect(page.locator('[data-cy="menuButton"]')).toBeVisible();
-  await page.context().storageState({ path: 'playwright/.auth/user.json' });
+  await page.context().storageState({ path: "playwright/.auth/user.json" });
 });
 ```
 
@@ -2144,8 +2145,9 @@ export class Sidenav {
   constructor(private page: Page) {}
 
   async expectExpanded() {
-    await expect(this.page.locator('.cds--side-nav'))
-      .toHaveClass(/cds--side-nav--expanded/);
+    await expect(this.page.locator(".cds--side-nav")).toHaveClass(
+      /cds--side-nav--expanded/
+    );
   }
 
   async toggle() {
@@ -2161,42 +2163,42 @@ export class Sidenav {
 await page.waitForTimeout(2000);
 
 // ✅ GOOD
-await expect(element).toBeVisible();  // Auto-retries
+await expect(element).toBeVisible(); // Auto-retries
 ```
 
 **4. Semantic Selectors for Carbon Components**
 
 ```typescript
 // Prefer role-based selectors
-page.getByRole('button', { name: 'Submit' });
-page.getByLabel('Username');
+page.getByRole("button", { name: "Submit" });
+page.getByLabel("Username");
 
 // Use exact: true for substring conflicts
-page.getByRole('button', { name: 'Storage', exact: true });
+page.getByRole("button", { name: "Storage", exact: true });
 
 // Carbon structural elements (acceptable)
-page.locator('.cds--side-nav');
+page.locator(".cds--side-nav");
 ```
 
 #### Configuration (`playwright.config.ts`)
 
 ```typescript
 export default defineConfig({
-  testDir: './playwright/tests',
+  testDir: "./playwright/tests",
   timeout: 30_000,
   expect: { timeout: 5_000 },
   use: {
-    baseURL: process.env.BASE_URL || 'https://localhost',
+    baseURL: process.env.BASE_URL || "https://localhost",
     ignoreHTTPSErrors: true,
-    trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
+    trace: "on-first-retry",
+    screenshot: "only-on-failure",
   },
   projects: [
-    { name: 'setup', testMatch: /.*\.setup\.ts/ },
+    { name: "setup", testMatch: /.*\.setup\.ts/ },
     {
-      name: 'chromium',
-      use: { storageState: 'playwright/.auth/user.json' },
-      dependencies: ['setup'],
+      name: "chromium",
+      use: { storageState: "playwright/.auth/user.json" },
+      dependencies: ["setup"],
     },
   ],
 });
@@ -2488,7 +2490,8 @@ npx playwright test file.spec.ts  # Run specific file
 - Frontend Component:
   `.specify/templates/testing/JestComponent.test.jsx.template`
 - Frontend E2E (Cypress): `.specify/templates/testing/CypressE2E.cy.js.template`
-- Frontend E2E (Playwright): [Playwright Best Practices](.specify/guides/playwright-best-practices.md)
+- Frontend E2E (Playwright):
+  [Playwright Best Practices](.specify/guides/playwright-best-practices.md)
 
 ### Common Anti-Patterns
 

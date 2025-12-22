@@ -1,21 +1,27 @@
 # Navbar Extraction Plan
 
 **Date**: 2025-01-XX  
-**Jira Issue**: [OGC-232](https://uwdigi.atlassian.net/jira/software/c/projects/OGC/boards/51?assignee=5e765a025e755d0cd425c863&selectedIssue=OGC-232)  
+**Jira Issue**:
+[OGC-232](https://uwdigi.atlassian.net/jira/software/c/projects/OGC/boards/51?assignee=5e765a025e755d0cd425c863&selectedIssue=OGC-232)  
 **Current Branch**: `nav-branch-pre-merge`  
-**Target Branch**: `feat/009-ogc-232-carbon-sidenav` (to be created from `origin/develop`)
+**Target Branch**: `feat/009-ogc-232-carbon-sidenav` (to be created from
+`origin/develop`)
 
 ## Executive Summary
 
 This branch (`nav-branch-pre-merge`) contains **two major feature sets**:
-1. **Navbar/Sidenav refactor** (spec 009-carbon-sidenav, Jira OGC-232) - **TO EXTRACT**
+
+1. **Navbar/Sidenav refactor** (spec 009-carbon-sidenav, Jira OGC-232) - **TO
+   EXTRACT**
 2. **Analyzer feature work** - **TO KEEP ON CURRENT BRANCH**
 
-We need to extract only the navbar-related changes into a clean branch based on `origin/develop`, leaving the analyzer work on the current branch.
+We need to extract only the navbar-related changes into a clean branch based on
+`origin/develop`, leaving the analyzer work on the current branch.
 
 ## Current State Analysis
 
 ### Branch Statistics
+
 - **Total files changed**: ~297 files
 - **Total insertions**: ~52,614 lines
 - **Total deletions**: ~2,388 lines
@@ -24,6 +30,7 @@ We need to extract only the navbar-related changes into a clean branch based on 
 ### Navbar-Related Files (TO EXTRACT)
 
 #### Core Components
+
 - `frontend/src/components/layout/Header.js` (M - modified)
 - `frontend/src/components/layout/Layout.js` (M - modified)
 - `frontend/src/components/layout/AnalyzerLayout.js` (A - added, uses navbar)
@@ -31,10 +38,12 @@ We need to extract only the navbar-related changes into a clean branch based on 
 - `frontend/src/components/layout/index.js` (A - added)
 
 #### Custom Hooks
+
 - `frontend/src/components/layout/useSideNavPreference.js` (A - added)
 - `frontend/src/components/layout/useMenuAutoExpand.js` (A - added)
 
 #### Tests
+
 - `frontend/src/components/layout/Header.test.js` (A - added)
 - `frontend/src/components/layout/Layout.test.js` (A - added)
 - `frontend/src/components/layout/Layout.integration.test.js` (A - added)
@@ -42,18 +51,23 @@ We need to extract only the navbar-related changes into a clean branch based on 
 - `frontend/src/components/layout/useMenuAutoExpand.test.js` (A - added)
 
 #### E2E Tests
+
 - `frontend/cypress/e2e/sidenavEnhanced.cy.js` (A - added)
 - `frontend/cypress/e2e/sidenavNavigation.cy.js` (A - added)
 
 #### Search Component (Modified)
-- `frontend/src/components/layout/search/searchBar.js` (M - modified, navbar-related)
+
+- `frontend/src/components/layout/search/searchBar.js` (M - modified,
+  navbar-related)
 
 #### Archive/Reference Files
+
 - `frontend/src/components/layout/_archive/TwoModeLayout.js` (A - added)
 - `frontend/src/components/layout/_archive/TwoModeLayout.css` (A - added)
 - `frontend/src/components/layout/_archive/TwoModeLayout.test.js` (A - added)
 
 #### Specification Files
+
 - `specs/009-carbon-sidenav/` (entire directory)
   - `spec.md`
   - `plan.md`
@@ -66,6 +80,7 @@ We need to extract only the navbar-related changes into a clean branch based on 
   - `contracts/layout-props.md`
 
 #### Supporting Files (May Need Review)
+
 - `frontend/src/components/Style.css` (M - modified, may contain navbar styles)
 - `frontend/src/App.js` (M - modified, may use Layout)
 - `frontend/src/App.test.js` (M - modified, may test Layout)
@@ -74,6 +89,7 @@ We need to extract only the navbar-related changes into a clean branch based on 
 ### Analyzer-Related Files (TO KEEP ON CURRENT BRANCH)
 
 These should **NOT** be extracted:
+
 - All `frontend/src/components/analyzers/` files
 - All `frontend/cypress/e2e/analyzer*.cy.js` files
 - All analyzer-related backend files
@@ -84,6 +100,7 @@ These should **NOT** be extracted:
 ### Mixed/Uncertain Files (NEED REVIEW)
 
 These files may contain both navbar and analyzer changes:
+
 - `frontend/src/App.js` - May have both navbar routing and analyzer routes
 - `frontend/src/App.test.js` - May test both
 - `frontend/src/components/Login.js` - May have Layout-related changes
@@ -95,10 +112,12 @@ These files may contain both navbar and analyzer changes:
 ## Extraction Strategy
 
 ### Option 1: Interactive Cherry-Pick (Recommended)
+
 **Pros**: Precise control, can review each commit  
 **Cons**: Time-consuming, requires manual conflict resolution
 
 **Steps**:
+
 1. Create new branch from `origin/develop`
 2. Identify navbar-only commits (review commit messages)
 3. Cherry-pick navbar commits one by one
@@ -106,20 +125,24 @@ These files may contain both navbar and analyzer changes:
 5. Resolve conflicts as they arise
 
 ### Option 2: File-Based Extraction (Faster)
+
 **Pros**: Faster, extracts all navbar files at once  
 **Cons**: May include unrelated changes in mixed files
 
 **Steps**:
+
 1. Create new branch from `origin/develop`
 2. Use `git checkout` to bring navbar files from current branch
 3. Review and clean up mixed files (App.js, Style.css, etc.)
 4. Commit navbar changes
 
 ### Option 3: Hybrid Approach (Recommended for This Case)
+
 **Pros**: Balance of speed and precision  
 **Cons**: Requires careful review
 
 **Steps**:
+
 1. Create new branch from `origin/develop`
 2. Use `git checkout` for clearly navbar-only files
 3. Manually review and extract navbar portions from mixed files
@@ -128,6 +151,7 @@ These files may contain both navbar and analyzer changes:
 ## Detailed Extraction Plan (Hybrid Approach)
 
 ### Phase 1: Setup
+
 ```bash
 # 1. Ensure we're on current branch and it's clean
 git checkout nav-branch-pre-merge
@@ -177,22 +201,27 @@ git checkout nav-branch-pre-merge -- specs/009-carbon-sidenav/
 
 ### Phase 3: Review Mixed Files
 
-For these files, we need to manually review and extract only navbar-related changes:
+For these files, we need to manually review and extract only navbar-related
+changes:
 
 1. **`frontend/src/App.js`**
+
    - Check if it has Layout/Header imports
    - Check if it has navbar routing changes
    - Extract only navbar-related changes
 
 2. **`frontend/src/App.test.js`**
+
    - Check if it tests Layout/Header
    - Extract only navbar-related tests
 
 3. **`frontend/src/components/Login.js`**
+
    - Check if it uses Layout
    - Extract only Layout-related changes
 
 4. **`frontend/src/components/Style.css`**
+
    - Search for navbar/sidenav-related CSS
    - Extract only navbar styles (may need to diff against develop)
 
@@ -245,7 +274,8 @@ Before considering extraction complete:
 - [ ] No analyzer files included
 - [ ] Build passes: `mvn clean install -DskipTests -Dmaven.test.skip=true`
 - [ ] Frontend tests pass: `npm test -- --testPathPattern="layout|sidenav"`
-- [ ] Navbar E2E tests pass: `npm run cy:run -- --spec "cypress/e2e/sidenav*.cy.js"`
+- [ ] Navbar E2E tests pass:
+      `npm run cy:run -- --spec "cypress/e2e/sidenav*.cy.js"`
 - [ ] No broken imports or references
 - [ ] Specification files included
 - [ ] Commit message follows convention
@@ -255,11 +285,13 @@ Before considering extraction complete:
 After successful extraction:
 
 1. **Update current branch** (`nav-branch-pre-merge`):
+
    - Remove navbar files (they're now in new branch)
    - Keep analyzer work
    - Rebase or merge from `origin/develop` if needed
 
 2. **Clean up new branch** (`feat/009-ogc-232-carbon-sidenav`):
+
    - Review and finalize navbar implementation
    - Run full test suite
    - Format code: `mvn spotless:apply && cd frontend && npm run format`
@@ -273,27 +305,38 @@ After successful extraction:
 ## Risk Assessment
 
 ### Low Risk
+
 - Core navbar files (Header.js, Layout.js, hooks) - clearly separated
 - Test files - clearly separated
 - Specification files - clearly separated
 
 ### Medium Risk
+
 - Mixed files (App.js, Style.css) - need careful review
 - AnalyzerLayout.js - uses navbar but is analyzer-specific
 
 ### High Risk
+
 - None identified - files are generally well-separated
 
 ## Questions to Resolve
 
-1. **AnalyzerLayout.js**: Should this be included in navbar branch or analyzer branch?
-   - **Recommendation**: Include in navbar branch since it demonstrates navbar usage, but note it's analyzer-specific
+1. **AnalyzerLayout.js**: Should this be included in navbar branch or analyzer
+   branch?
+
+   - **Recommendation**: Include in navbar branch since it demonstrates navbar
+     usage, but note it's analyzer-specific
 
 2. **Style.css changes**: How to extract only navbar-related CSS?
-   - **Recommendation**: Use `git diff origin/develop...nav-branch-pre-merge -- frontend/src/components/Style.css` and manually extract navbar styles
 
-3. **App.js routing**: If App.js has both navbar and analyzer routing, how to split?
-   - **Recommendation**: Extract navbar routing to new branch, leave analyzer routing on current branch
+   - **Recommendation**: Use
+     `git diff origin/develop...nav-branch-pre-merge -- frontend/src/components/Style.css`
+     and manually extract navbar styles
+
+3. **App.js routing**: If App.js has both navbar and analyzer routing, how to
+   split?
+   - **Recommendation**: Extract navbar routing to new branch, leave analyzer
+     routing on current branch
 
 ## Next Steps
 
@@ -307,7 +350,8 @@ After successful extraction:
 
 ## Jira Issue Reference
 
-- **Issue**: [OGC-232](https://uwdigi.atlassian.net/jira/software/c/projects/OGC/boards/51?assignee=5e765a025e755d0cd425c863&selectedIssue=OGC-232)
+- **Issue**:
+  [OGC-232](https://uwdigi.atlassian.net/jira/software/c/projects/OGC/boards/51?assignee=5e765a025e755d0cd425c863&selectedIssue=OGC-232)
 - **Spec**: `009-carbon-sidenav`
-- **Branch Convention**: Following Constitution Principle IX, using format `feat/{NNN}[-{jira}]-{name}`
-
+- **Branch Convention**: Following Constitution Principle IX, using format
+  `feat/{NNN}[-{jira}]-{name}`

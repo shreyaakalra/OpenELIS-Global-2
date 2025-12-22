@@ -1,4 +1,4 @@
-import { Page, expect, Locator } from '@playwright/test';
+import { Page, expect, Locator } from "@playwright/test";
 
 /**
  * Sidenav Page Object - encapsulates sidenav interactions
@@ -10,9 +10,9 @@ export class Sidenav {
 
   constructor(page: Page) {
     this.page = page;
-    this.nav = page.locator('.cds--side-nav');
+    this.nav = page.locator(".cds--side-nav");
     // Use id for stability (data-cy is for testing, id is the DOM identifier)
-    this.menuButton = page.locator('#sidenav-menu-button');
+    this.menuButton = page.locator("#sidenav-menu-button");
   }
 
   /** Check if sidenav is expanded */
@@ -32,32 +32,32 @@ export class Sidenav {
 
   /** Click a menu item by text */
   async clickMenu(text: string) {
-    await this.nav.getByRole('link', { name: text }).click();
+    await this.nav.getByRole("link", { name: text }).click();
   }
 
   /** Expand a parent menu by text (exact match) */
   async expandMenu(text: string) {
-    const button = this.nav.getByRole('button', { name: text, exact: true });
-    const expanded = await button.getAttribute('aria-expanded');
-    if (expanded !== 'true') {
+    const button = this.nav.getByRole("button", { name: text, exact: true });
+    const expanded = await button.getAttribute("aria-expanded");
+    if (expanded !== "true") {
       await button.click();
     }
   }
 
   /** Check if a menu item is active/current */
   async expectMenuActive(text: string) {
-    const link = this.nav.getByRole('link', { name: text });
+    const link = this.nav.getByRole("link", { name: text });
     await expect(link).toHaveClass(/cds--side-nav__link--current/);
   }
 
   /** Check if a menu item is NOT active */
   async expectMenuInactive(text: string) {
-    const link = this.nav.getByRole('link', { name: text });
+    const link = this.nav.getByRole("link", { name: text });
     await expect(link).not.toHaveClass(/cds--side-nav__link--current/);
   }
 
   /** Navigate to storage section and wait for load */
-  async gotoStorage(path = 'samples') {
+  async gotoStorage(path = "samples") {
     await this.page.goto(`/Storage/${path}`);
     await expect(this.page).toHaveURL(new RegExp(`/Storage/${path}`));
   }
@@ -68,4 +68,3 @@ export class Sidenav {
     await expect(this.page).toHaveURL(/FreezerMonitoring/);
   }
 }
-
