@@ -48,7 +48,7 @@ jobs:
           CI: true
           BASE_URL: https://localhost
 
-      - name: Upload Playwright report
+      - name: Upload Playwright HTML report
         if: failure()
         uses: actions/upload-artifact@v4
         with:
@@ -56,13 +56,23 @@ jobs:
           path: frontend/playwright-report/
           retention-days: 7
 
-      - name: Upload test results
+      - name: Upload failure screenshots
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-test-results
-          path: frontend/test-results/
+          name: playwright-screenshots
+          path: frontend/test-results/**/test-failed-*.png
           retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Upload test traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: frontend/test-results/**/trace.zip
+          retention-days: 7
+          if-no-files-found: ignore
 
       - name: Dump docker logs on failure
         if: failure()
