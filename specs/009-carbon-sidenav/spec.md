@@ -275,6 +275,13 @@ content rather than pushing it.
   providers from the existing Layout.js.
 - **FR-013**: System MUST apply the refactored layout globally to all
   authenticated routes (not incremental rollout).
+- **FR-014**: System MUST support nested subnav structure for Storage section
+  with 3-level hierarchy:
+  - Level 1: Storage (parent)
+  - Level 2: Storage Management, Cold Storage Monitoring (expandable parents)
+  - Level 3: Dashboard tabs as leaf items (Sample Items, Rooms, Devices,
+    Shelves, Racks, Boxes for Storage Management; Dashboard, Corrective Actions,
+    Historical Trends, Reports, Settings for Cold Storage Monitoring)
 
 ### Constitution Compliance Requirements (OpenELIS Global 3.0)
 

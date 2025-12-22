@@ -141,22 +141,22 @@ Principle IX)
   - **Coverage Goal**: >70% (measured via Jest)
   - **TDD Workflow**: Red-Green-Refactor cycle for toggle logic and preference
     persistence
-- [x] **E2E Tests**: Critical user workflows (Cypress)
-  - Template: `.specify/templates/testing/CypressE2E.cy.js.template`
+- [x] **E2E Tests**: Critical user workflows (Playwright - switched from Cypress)
+  - Location: `frontend/playwright/tests/sidenav.spec.ts`
   - **Reference**:
-    [Constitution Section V.5](../../.specify/memory/constitution.md#section-v5-cypress-e2e-testing-best-practices)
+    [Playwright Best Practices](../../.specify/guides/playwright-best-practices.md)
   - **Reference**:
-    [Testing Roadmap - Cypress E2E Testing](../../.specify/guides/testing-roadmap.md#cypress-e2e-testing)
-  - **Reference**:
-    [Cypress Best Practices](../../.specify/guides/cypress-best-practices.md)
+    [Testing Roadmap - Playwright E2E Testing](../../.specify/guides/testing-roadmap.md#playwright-e2e-testing)
+  - **Why Playwright**: Faster execution (10s vs 30s), better Page Object Model,
+    modern async/await patterns, parallel CI workflow
 
 ### Test Data Management
 
 - **Frontend**:
-  - **E2E Tests (Cypress)**:
-    - [x] Use `cy.session()` for login state (10-20x faster than per-test login)
-    - [x] Use `cy.intercept()` for menu API responses with consistent test data
-    - [x] Use custom Cypress commands for reusable navigation setup
+  - **E2E Tests (Playwright)**:
+    - [x] Use setup project for login state (`auth.setup.ts` - authenticate once)
+    - [x] Use Page Object Model (`Sidenav` fixture for reusable interactions)
+    - [x] Use auto-retrying assertions (no arbitrary waits)
   - **Unit Tests (Jest)**:
     - [x] Mock menu data with hierarchical structure
     - [x] Mock localStorage for preference persistence testing

@@ -25,6 +25,49 @@ test.describe("Sidenav", () => {
     await sidenav.expectExpanded();
   });
 
+  /**
+   * FR-002: Preference persistence across browser refresh
+   * @see spec.md User Story 2: Persist User Preference Across Sessions
+   */
+  test("preference persists after page refresh", async ({ page }) => {
+    const sidenav = new Sidenav(page);
+    await sidenav.gotoStorage("samples");
+
+    // Storage defaults to expanded - collapse it
+    await sidenav.expectExpanded();
+    await sidenav.toggle();
+    await sidenav.expectCollapsed();
+
+    // Refresh the page
+    await page.reload();
+
+    // Should still be collapsed (preference persisted)
+    await sidenav.expectCollapsed();
+  });
+
+  /**
+   * FR-007: Content push verification in LOCK mode
+   * @see spec.md FR-007: Content shifts right when sidenav locked
+   */
+  test("content area has locked class when nav expanded", async ({ page }) => {
+    const sidenav = new Sidenav(page);
+    await sidenav.gotoStorage("samples");
+
+    // Storage defaults to LOCK mode (expanded + content pushed)
+    await sidenav.expectExpanded();
+
+    // Verify content has the locked class
+    const content = page.locator('[data-testid="content-wrapper"]');
+    await expect(content).toHaveClass(/content-nav-locked/);
+
+    // Collapse nav
+    await sidenav.toggle();
+    await sidenav.expectCollapsed();
+
+    // Content should NOT have locked class
+    await expect(content).not.toHaveClass(/content-nav-locked/);
+  });
+
   test("storage subnav updates active state", async ({ page }) => {
     const sidenav = new Sidenav(page);
     await sidenav.gotoStorage("samples");
