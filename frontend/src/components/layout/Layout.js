@@ -117,7 +117,10 @@ export default function Layout(props) {
           {/* Theme wrapper creates white theme zone for content area */}
           {/* Global SCSS theme = blue header/nav, this = light content */}
           <Theme theme="white">
-            <Content className={isLocked ? "content-nav-locked" : ""}>
+            <Content
+              data-testid="content-wrapper"
+              className={isLocked ? "content-nav-locked" : ""}
+            >
               {children}
             </Content>
           </Theme>

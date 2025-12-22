@@ -344,18 +344,21 @@ describe("useMenuAutoExpand", () => {
 
     /**
      * Test: Preserves existing expanded state for non-active branches
+     * UPDATED 2025-12: Hook now preserves manual expansions (user feedback)
+     * @see useMenuAutoExpand.js comment about autocollapse being removed
      */
     test("testAutoExpand_NonActiveBranch_PreservesState", () => {
       const menus = [
         {
           menu: {
             id: "1",
+            elementId: "menu_analyzers",
             displayKey: "menu.analyzers",
             actionURL: "/analyzers",
             isActive: true,
           },
           childMenus: [],
-          expanded: true, // Already expanded
+          expanded: true, // Already expanded - should be preserved
         },
       ];
 
@@ -366,8 +369,9 @@ describe("useMenuAutoExpand", () => {
       });
 
       const updatedMenus = result.current;
-      // Should collapse non-active branches
-      expect(updatedMenus[0].expanded).toBe(false);
+      // Hook preserves expanded state (does NOT auto-collapse non-active branches)
+      // Per user feedback: "autocollapse causes consistency issues and changes user focus"
+      expect(updatedMenus[0].expanded).toBe(true);
     });
   });
 });
