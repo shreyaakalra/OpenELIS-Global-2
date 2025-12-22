@@ -11,8 +11,8 @@ setup('authenticate', async ({ page }) => {
   await page.getByLabel('Password').fill(password);
   await page.getByRole('button', { name: 'Login' }).click();
 
-  // Wait for authenticated state
-  await expect(page.getByRole('button', { name: /menu/i })).toBeVisible();
+  // Wait for authenticated state (sidenav menu button visible)
+  await expect(page.locator('#sidenav-menu-button')).toBeVisible();
 
   await page.context().storageState({ path: AUTH_FILE });
 });

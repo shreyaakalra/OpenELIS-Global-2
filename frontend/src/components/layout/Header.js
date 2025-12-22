@@ -197,7 +197,7 @@ function OEHeader({
 
     const handleClickOutside = (event) => {
       const sideNav = document.querySelector(".cds--side-nav");
-      const menuButton = document.querySelector('[data-cy="menuButton"]');
+      const menuButton = document.getElementById("sidenav-menu-button");
 
       if (
         sideNav &&
@@ -550,6 +550,7 @@ function OEHeader({
           <Header id="mainHeader" className="mainHeader" aria-label="">
             {userSessionDetails.authenticated && (
               <button
+                id="sidenav-menu-button"
                 data-cy="menuButton"
                 className="cds--header__action cds--header__menu-trigger cds--header__menu-toggle"
                 aria-label={
@@ -745,8 +746,8 @@ function OEHeader({
                       const target = e.relatedTarget;
                       const navEl = e.currentTarget;
                       const headerEl = document.getElementById("mainHeader");
-                      const menuButton = document.querySelector(
-                        '[data-cy="menuButton"]',
+                      const menuButton = document.getElementById(
+                        "sidenav-menu-button",
                       );
                       const isNode =
                         target && typeof target.contains === "function";

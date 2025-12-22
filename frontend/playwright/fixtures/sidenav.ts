@@ -11,7 +11,8 @@ export class Sidenav {
   constructor(page: Page) {
     this.page = page;
     this.nav = page.locator('.cds--side-nav');
-    this.menuButton = page.locator('[data-cy="menuButton"]');
+    // Use id for stability (data-cy is for testing, id is the DOM identifier)
+    this.menuButton = page.locator('#sidenav-menu-button');
   }
 
   /** Check if sidenav is expanded */
