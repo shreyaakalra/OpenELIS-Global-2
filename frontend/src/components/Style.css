@@ -436,6 +436,30 @@ button {
   display: inline-flex !important;
 }
 
+.custom-sidenav-button {
+  box-sizing: border-box;
+  margin: 0;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  visibility: visible !important;
+  align-items: center;
+  background-color: var(--cds-background-hover, #072655);
+  color: var(--cds-text-secondary, #ffffff);
+  transition:
+    color 110ms,
+    background-color 110ms,
+    outline 110ms;
+  -webkit-user-select: none;
+  user-select: none;
+  width: 100%;
+  pointer-events: auto;
+}
+
+.custom-sidenav-button:hover {
+  background-color: var(--cds-background, #295785);
+}
+
 .cds--side-nav__link a {
   pointer-events: auto;
   text-decoration: none !important;
@@ -637,19 +661,32 @@ nav.cds--side-nav .cds--side-nav__link[aria-current="page"]::before {
   box-shadow: none !important;
 }
 
-/* Focus state - remove white background that appears on click */
-.cds--side-nav__menu-item .cds--side-nav__link:focus,
-.cds--side-nav__menu-item .cds--side-nav__link:active,
-.cds--side-nav__menu-item .cds--side-nav__link:focus-visible {
-  background-color: var(
-    --cds-layer-selected-01,
-    rgba(255, 255, 255, 0.1)
-  ) !important; /* Use active background, not white */
+/* Focus state - prevent Carbon's bright focus indicator "flash" while keeping accessibility.
+ *
+ * Key rule: DO NOT toggle background-color on generic focus; that creates flicker when
+ * focus moves between submenu buttons and links during expansion/collapse.
+ *
+ * Instead:
+ * - remove Carbon's ::before focus marker (the source of the white border flash)
+ * - add a stable outline ONLY on :focus-visible
+ */
+nav.cds--side-nav .cds--side-nav__link:focus,
+nav.cds--side-nav .cds--side-nav__link:active {
   outline: none !important;
   box-shadow: none !important;
-  border-right: none !important;
-  border-top: none !important;
-  border-bottom: none !important;
+}
+
+nav.cds--side-nav .cds--side-nav__link:focus-visible {
+  outline: 2px solid var(--cds-focus, #0f62fe) !important;
+  outline-offset: -2px;
+  box-shadow: none !important;
+}
+
+nav.cds--side-nav .cds--side-nav__link:focus::before,
+nav.cds--side-nav .cds--side-nav__link:active::before,
+nav.cds--side-nav .cds--side-nav__link:focus-visible::before {
+  display: none !important;
+  content: none !important;
 }
 
 /* Active + Focus state - ensure no white background */
@@ -678,6 +715,19 @@ nav.cds--side-nav .cds--side-nav__submenu:focus-visible {
   outline: none !important;
   box-shadow: none !important;
   border: none !important;
+}
+
+/* Provide a stable focus-visible outline for submenu toggle buttons without Carbon's flashing ::before */
+nav.cds--side-nav .cds--side-nav__submenu:focus-visible {
+  outline: 2px solid var(--cds-focus, #0f62fe) !important;
+  outline-offset: -2px;
+}
+
+nav.cds--side-nav .cds--side-nav__submenu:focus::before,
+nav.cds--side-nav .cds--side-nav__submenu:active::before,
+nav.cds--side-nav .cds--side-nav__submenu:focus-visible::before {
+  display: none !important;
+  content: none !important;
 }
 
 /* Remove persistent focus background - only show background on hover or when actually active */
@@ -745,19 +795,10 @@ nav.cds--side-nav
   box-shadow: none !important;
 }
 
-/* Remove any default Carbon active state backgrounds/borders that might be causing white borders */
-.cds--side-nav__menu-item.cds--side-nav__menu-item--active .cds--side-nav__link,
-.cds--side-nav__menu-item[aria-current="page"] .cds--side-nav__link {
-  background-color: var(
-    --cds-layer-selected-01,
-    rgba(255, 255, 255, 0.1)
-  ) !important;
-  border-right: none !important;
-  border-top: none !important;
-  border-bottom: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
+/* Avoid styling based on menu-item--active (Carbon uses it transiently during interactions).
+ * Active visuals should be driven only by .cds--side-nav__link--current / aria-current="page".
+ * This prevents transient "flash" on previously-touched top-level menus when expanding others.
+ */
 
 /* Prevent submenu buttons from inheriting active styles from parent menu items */
 /* Carbon applies active styles to all submenu buttons when parent is active - we need to override this */

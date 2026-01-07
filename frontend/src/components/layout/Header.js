@@ -435,58 +435,78 @@ function OEHeader({
         hasActiveChild ||
         (defaultMode === SIDENAV_MODES.LOCK && hasActiveChild);
       return (
-        <SideNavMenu
-          // IMPORTANT: use stable key (elementId) to prevent React from reusing the wrong subtree
-          // when the menu list shape changes (roles/plugins/async load).
-          key={itemId}
-          title={intl.formatMessage({ id: menuItem.menu.displayKey })}
-          defaultExpanded={carbonExpanded}
-          isActive={carbonIsActive}
-          onToggle={(expanded) => {
-            setMenuItemExpanded(menuItem, path);
-            if (expanded) {
-              navigateToFirstChild(menuItem);
+        // Wrapper span with ID for backward compatibility with Cypress selectors (span#menu_xxx)
+        <span key={itemId} id={menuItem.menu.elementId}>
+          <SideNavMenu
+            // IMPORTANT: use stable key (elementId) to prevent React from reusing the wrong subtree
+            // when the menu list shape changes (roles/plugins/async load).
+            title={intl.formatMessage({ id: menuItem.menu.displayKey })}
+            defaultExpanded={carbonExpanded}
+            isActive={carbonIsActive}
+            onToggle={(expanded) => {
+              setMenuItemExpanded(menuItem, path);
+              if (expanded) {
+                navigateToFirstChild(menuItem);
+              }
+            }}
+            className={
+              level === 0
+                ? "top-level-menu-item"
+                : "reduced-padding-nav-menu-item"
             }
-          }}
-          className={
-            level === 0
-              ? "top-level-menu-item"
-              : "reduced-padding-nav-menu-item"
-          }
-        >
-          {menuItem.childMenus.map((childMenuItem, childIndex) => {
-            return generateMenuItems(
-              childMenuItem,
-              childIndex,
-              level + 1,
-              path + ".childMenus[" + childIndex + "]",
-              menuItem.childMenus, // Pass parent's children for sibling check
-            );
-          })}
-        </SideNavMenu>
+          >
+            <span
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+            >
+              {menuItem.childMenus.map((childMenuItem, childIndex) => {
+                return generateMenuItems(
+                  childMenuItem,
+                  childIndex,
+                  level + 1,
+                  path + ".childMenus[" + childIndex + "]",
+                  menuItem.childMenus, // Pass parent's children for sibling check
+                );
+              })}
+            </span>
+          </SideNavMenu>
+        </span>
       );
     }
 
-    // Leaf item
+    // Leaf item - wrapped in span for backward compatibility with Cypress selectors
     return (
-      <SideNavMenuItem
-        // IMPORTANT: use stable key (elementId) to prevent subtree reuse issues.
+      <span
         key={itemId}
-        data-cy={`${menuItem.menu.elementId.replace(/[^\w\s]/gi, "_")}`}
         id={menuItem.menu.elementId}
-        className={
-          level === 0 ? "top-level-menu-item" : "reduced-padding-nav-menu-item"
-        }
-        isActive={isLeafActive}
-        href={menuItem.menu.actionURL || undefined}
-        onClick={handleLabelClick}
+        data-cy={`${menuItem.menu.elementId.replace(/[^\w\s]/gi, "_")}`}
       >
-        <span
-          style={{ fontSize: level > 0 ? `${100 - 5 * (level - 1)}%` : "100%" }}
+        <SideNavMenuItem
+          id={menuItem.menu.elementId + "_nav"}
+          className={level === 0 ? "top-level-menu-item" : "reduced-padding-nav-menu-item"}
+          isActive={isLeafActive}
+          href={menuItem.menu.actionURL || undefined}
+          target={menuItem.menu.openInNewWindow ? "_blank" : undefined}
+          rel={menuItem.menu.openInNewWindow ? "noreferrer" : undefined}
+          onClick={handleLabelClick}
+          aria-current={isLeafActive ? "page" : undefined}
+          style={level === 0 ? undefined : { width: "100%" }}
         >
-          <FormattedMessage id={menuItem.menu.displayKey} />
-        </span>
-      </SideNavMenuItem>
+          <span
+            style={{
+              display: "flex",
+              width: "100%",
+              marginLeft: level === 0 ? 0 : `${(level - 1) * 0.5}rem`,
+            }}
+          >
+            <span style={{ fontSize: `${100 - 5 * Math.max(level - 1, 0)}%` }}>
+              <FormattedMessage id={menuItem.menu.displayKey} />
+            </span>
+          </span>
+        </SideNavMenuItem>
+      </span>
     );
   };
 
@@ -729,11 +749,11 @@ function OEHeader({
             {userSessionDetails.authenticated && (
               <>
                 <SideNav
-                  key={`${mode}-${SIDENAV_MODES.CLOSE}-${SIDENAV_MODES.LOCK}`}
                   aria-label="Side navigation"
                   expanded={mode !== SIDENAV_MODES.CLOSE}
                   isFixedNav={mode === SIDENAV_MODES.LOCK}
-                  isPersistent={false}
+                  // LOCK mode should be persistent; SHOW mode is temporary overlay
+                  isPersistent={mode === SIDENAV_MODES.LOCK}
                   isChildOfHeader={true}
                   onMouseEnter={() => {
                     if (mode === SIDENAV_MODES.SHOW && hideTimerRef.current) {

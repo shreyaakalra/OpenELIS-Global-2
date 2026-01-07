@@ -30,6 +30,17 @@ export class Sidenav {
     await this.menuButton.click();
   }
 
+  /** Ensure the SideNav is expanded (click toggle if needed) */
+  async ensureExpanded() {
+    const hasExpandedClass = await this.nav.evaluate((el) =>
+      el.classList.contains("cds--side-nav--expanded"),
+    );
+    if (!hasExpandedClass) {
+      await this.toggle();
+      await this.expectExpanded();
+    }
+  }
+
   /** Click a menu item by text */
   async clickMenu(text: string) {
     await this.nav.getByRole("link", { name: text }).click();
@@ -42,6 +53,56 @@ export class Sidenav {
     if (expanded !== "true") {
       await button.click();
     }
+  }
+
+  /**
+   * Expand ALL currently-collapsed menus in the nav.
+   *
+   * Useful for "click every link" tests where we want the full tree visible.
+   * Safe to call multiple times.
+   */
+  async expandAllMenus() {
+    await this.ensureExpanded();
+
+    // Expand iteratively since expanding one node can reveal more nodes.
+    for (let i = 0; i < 25; i++) {
+      const closed = this.nav.locator('button[aria-expanded="false"]');
+      const count = await closed.count();
+      if (count === 0) return;
+
+      // Click the first closed menu button and continue.
+      await closed.first().click();
+    }
+  }
+
+  /**
+   * Return visible sidenav link info. This intentionally only captures "real" links
+   * (anchor tags) and skips menu toggle buttons.
+   */
+  async getVisibleLinkInfos(): Promise<
+    Array<{ name: string; href: string; target: string | null }>
+  > {
+    await this.ensureExpanded();
+    // Expand all menus so nested links are visible
+    await this.expandAllMenus();
+
+    const links = this.nav.locator("a.cds--side-nav__link");
+    const count = await links.count();
+    const infos: Array<{ name: string; href: string; target: string | null }> =
+      [];
+
+    for (let i = 0; i < count; i++) {
+      const link = links.nth(i);
+      if (!(await link.isVisible())) continue;
+      const href = (await link.getAttribute("href")) || "";
+      if (!href) continue;
+      const target = await link.getAttribute("target");
+      const rawName = (await link.textContent()) || "";
+      const name = rawName.replace(/\s+/g, " ").trim();
+      infos.push({ name, href, target });
+    }
+
+    return infos;
   }
 
   /** Check if a menu item is active/current */
