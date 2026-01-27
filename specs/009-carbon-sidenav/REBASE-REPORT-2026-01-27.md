@@ -111,9 +111,23 @@ fixes merged
 
 ---
 
+## Post-Rebase Test Failures (Follow-up)
+
+The following test failures were observed after this rebase. Address in follow-up:
+
+| Failure | Location | Cause | Recommended fix |
+| ------- | -------- | ----- | ---------------- |
+| Navbar "notifications icon opens panel" | `playwright/tests/navbar.spec.ts:30` | Strict mode: `getByText('Notifications')` resolves to 3 elements (tooltip, slide-over title, empty state text) | Use a specific selector, e.g. `page.locator('div.slide-over-title').filter({ hasText: 'Notifications' })` or `getByRole('heading', { name: 'Notifications' })` |
+| Playwright E2E (sidenav) | `playwright/tests/sidenav.spec.ts` | Requires dev server at https://localhost/; times out or ERR_CONNECTION_REFUSED when server not running | Run with `docker compose -f dev.docker-compose.yml up -d` (or `npm start`) then `npx playwright test playwright/tests/sidenav.spec.ts` |
+| Stray test output file | `frontend/sidenav.spec.ts` (root) | Playwright/test output was committed; contains "Running N tests..." not source | Already in `.prettierignore`. Remove from repo: `git rm frontend/sidenav.spec.ts` if no longer needed, or ensure it is not written by scripts. |
+| Overwritten spec (this run) | `frontend/playwright/tests/sidenav.spec.ts` | Was overwritten by a prior `pw:test` run (output redirected into file) | Restored via `git checkout HEAD -- frontend/playwright/tests/sidenav.spec.ts`. Avoid piping Playwright stdout into a path that matches a spec file. |
+
+---
+
 ## Summary
 
-- ✅ **Rebase successful**: 10 commits on top of develop
+- ✅ **Rebase successful**: 12 commits on top of develop (incl. REBASE-REPORT commit +
+  Spotless/format cleanup)
 - ✅ **Conflicts resolved**: 2 conflicts in 2 commits (Header.js, base.xml)
 - ✅ **Tests passing**: 59/59 layout unit tests pass
 - ✅ **Code quality**: Spotless formatting applied
