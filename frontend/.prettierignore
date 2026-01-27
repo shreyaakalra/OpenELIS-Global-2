@@ -14,5 +14,6 @@ coverage/
 reports/
 **/*.min.js
 *.log
-
+# Stray Playwright test output (not source - should be removed)
+sidenav.spec.ts
 

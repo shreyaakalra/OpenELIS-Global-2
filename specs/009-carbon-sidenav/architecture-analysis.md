@@ -87,8 +87,9 @@ Carbon Design System patterns we are trying to introduce.
 
 ### Phase 3: Verification
 
-1. **Automated E2E**: Run `npm run pw:test sidenav.spec.ts` (playwright/tests/sidenav.spec.ts) to prove the state
-   sync works without reloading.
+1. **Automated E2E**: Run `npm run pw:test sidenav.spec.ts`
+   (playwright/tests/sidenav.spec.ts) to prove the state sync works without
+   reloading.
 2. **Manual Check**: Verify Storage defaults to locked, Home defaults to closed.
 
 ## Why This Happened
