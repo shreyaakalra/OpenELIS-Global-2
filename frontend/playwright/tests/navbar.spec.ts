@@ -51,14 +51,12 @@ test.describe("Navbar (Header) actions", () => {
     await expect(page.getByLabel("Help Panel")).toBeVisible();
 
     // Basic smoke: expected items exist (names depend on translations)
-    await expect(page.getByRole("button", { name: /user manual/i })).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: /user manual/i }),
+    ).toBeVisible();
 
     // Close it
     await page.locator("#user-Help").click();
     await expect(page.getByLabel("Help Panel")).toBeHidden();
   });
 });
-
-
-
-

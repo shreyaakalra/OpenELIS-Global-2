@@ -485,7 +485,11 @@ function OEHeader({
       >
         <SideNavMenuItem
           id={menuItem.menu.elementId + "_nav"}
-          className={level === 0 ? "top-level-menu-item" : "reduced-padding-nav-menu-item"}
+          className={
+            level === 0
+              ? "top-level-menu-item"
+              : "reduced-padding-nav-menu-item"
+          }
           isActive={isLeafActive}
           href={menuItem.menu.actionURL || undefined}
           target={menuItem.menu.openInNewWindow ? "_blank" : undefined}

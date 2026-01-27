@@ -18,8 +18,8 @@ Modified Sections:
     * CHANGED: Framework-specific guidance made framework-agnostic where possible
 
 Rationale for Changes:
-  Testing Roadmap already recommends Playwright for new tests (added 2026-01-XX) 
-  but Constitution V.5 mandated Cypress exclusively, creating a compliance 
+  Testing Roadmap already recommends Playwright for new tests (added 2026-01-XX)
+  but Constitution V.5 mandated Cypress exclusively, creating a compliance
   conflict. Feature 009-carbon-sidenav implemented Playwright tests successfully.
   This amendment aligns Constitution with Testing Roadmap guidance while
   preserving Cypress support for existing tests. Hard time limits removed in

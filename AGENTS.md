@@ -1391,11 +1391,12 @@ public class SampleServiceIntegrationTest extends BaseWebContextSensitiveTest {
 
 ### E2E Tests (Cypress & Playwright)
 
-**Framework Selection**: Per Constitution V.5 (amended 2026-01-27), E2E tests may
-use either **Cypress** (existing tests) or **Playwright** (recommended for new
-tests). See Testing Roadmap for selection guidance.
+**Framework Selection**: Per Constitution V.5 (amended 2026-01-27), E2E tests
+may use either **Cypress** (existing tests) or **Playwright** (recommended for
+new tests). See Testing Roadmap for selection guidance.
 
 **Locations:**
+
 - Cypress: `frontend/cypress/e2e/{feature}.cy.js`
 - Playwright: `frontend/playwright/tests/{feature}.spec.ts`
 
@@ -1407,6 +1408,7 @@ tests (see `specs/009-carbon-sidenav/` for reference implementation).
 for detailed patterns for both Cypress and Playwright.
 
 **For Quick Reference**: See framework-specific guides:
+
 - [Cypress Best Practices](.specify/guides/cypress-best-practices.md)
 - [Playwright Best Practices](.specify/guides/playwright-best-practices.md)
 
@@ -1420,6 +1422,7 @@ requirements (applies to both frameworks).
 - **CI/CD:** Run full suite
 
 **Cypress Commands:**
+
 ```bash
 # Development (CORRECT - run individual test)
 npm run cy:run -- --spec "cypress/e2e/storageAssignment.cy.js"
@@ -1429,6 +1432,7 @@ npm run cy:run
 ```
 
 **Playwright Commands (recommended for new tests):**
+
 ```bash
 # Development (run individual test)
 npm run pw:test sidenav.spec.ts

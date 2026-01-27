@@ -385,8 +385,8 @@ complete
 > - [Constitution Section V.5](../../.specify/memory/constitution.md)
 
 - [x] T081 [P] [M3] **[GREEN]** Create Playwright E2E test file in
-      `frontend/playwright/tests/sidenav.spec.ts` → Run `npm run pw:test` ✅
-      8/8 tests passing
+      `frontend/playwright/tests/sidenav.spec.ts` → Run `npm run pw:test` ✅ 8/8
+      tests passing
 
   - Test: home page has collapsed nav (FR-006)
   - Test: storage page has expanded nav (FR-006)
@@ -406,7 +406,8 @@ complete
   - Use setup project for login state (auth.setup.ts)
   - Use Page Object Model (Sidenav fixture)
   - Follow Playwright best practices (auto-retrying assertions)
-  - Deleted redundant Cypress tests (sidenavNavigation.cy.js, sidenavEnhanced.cy.js)
+  - Deleted redundant Cypress tests (sidenavNavigation.cy.js,
+    sidenavEnhanced.cy.js)
 
 ### Constitution Compliance Verification
 
@@ -425,21 +426,27 @@ complete
 
 ### Milestone 3 Completion
 
-- [x] T094 [M3] Run all unit tests: `cd frontend && npm test` ✅ 31 suites, 293 passed
-- [x] T095 [M3] Run Playwright E2E tests: `npm run pw:test` ✅ 8/8 passing (10.9s)
+- [x] T094 [M3] Run all unit tests: `cd frontend && npm test` ✅ 31 suites, 293
+      passed
+- [x] T095 [M3] Run Playwright E2E tests: `npm run pw:test` ✅ 8/8 passing
+      (10.9s)
 - [x] T096 [M3] Review test artifacts after run (screenshots on failure)
 - [x] T097 [M3] Format code: `cd frontend && npm run format` ✅
-- [x] T098 [M3] Create PR for M3: `feat/ogc-232-009-sidenav-m3-polish` → `develop` ✅ PR #2487
+- [x] T098 [M3] Create PR for M3: `feat/ogc-232-009-sidenav-m3-polish` →
+      `develop` ✅ PR #2487
 
 **Checkpoint**: Milestone 3 PR ready for review. All tests passing, feature
 complete.
 
 ### Additional M3 Work (Completed 2026-01-27)
 
-- [x] T099 [M3] Add Playwright CI workflow: `.github/workflows/playwright-e2e.yml`
-- [x] T100 [M3] Add storage subnav structure (FR-014): Liquibase migration + translations
+- [x] T099 [M3] Add Playwright CI workflow:
+      `.github/workflows/playwright-e2e.yml`
+- [x] T100 [M3] Add storage subnav structure (FR-014): Liquibase migration +
+      translations
 - [x] T101 [M3] Add Playwright best practices documentation
-- [x] T102 [M3] Fix Jest test failures (archived TwoModeLayout.test.js, Layout.test.js, useMenuAutoExpand.test.js)
+- [x] T102 [M3] Fix Jest test failures (archived TwoModeLayout.test.js,
+      Layout.test.js, useMenuAutoExpand.test.js)
 - [x] T103 [M3] Address PR #2394 review comments (data-cy vs id separation)
 
 ---

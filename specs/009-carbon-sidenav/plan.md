@@ -1,8 +1,8 @@
 # Implementation Plan: Carbon Design System Sidenav
 
-**Branch**: `009-carbon-sidenav` | **Created**: December 4, 2025 | **Last Updated**: January 27, 2026 | **Spec**:
-[spec.md](spec.md) **Input**: Feature specification from
-`/specs/009-carbon-sidenav/spec.md`
+**Branch**: `009-carbon-sidenav` | **Created**: December 4, 2025 | **Last
+Updated**: January 27, 2026 | **Spec**: [spec.md](spec.md) **Input**: Feature
+specification from `/specs/009-carbon-sidenav/spec.md`
 
 ## Summary
 
@@ -143,7 +143,8 @@ Principle IX)
   - **Coverage Goal**: >70% (measured via Jest)
   - **TDD Workflow**: Red-Green-Refactor cycle for toggle logic and preference
     persistence
-- [x] **E2E Tests**: Critical user workflows (Playwright - switched from Cypress)
+- [x] **E2E Tests**: Critical user workflows (Playwright - switched from
+      Cypress)
   - Location: `frontend/playwright/tests/sidenav.spec.ts`
   - **Reference**:
     [Playwright Best Practices](../../.specify/guides/playwright-best-practices.md)
@@ -157,7 +158,8 @@ Principle IX)
 
 - **Frontend**:
   - **E2E Tests (Playwright)**:
-    - [x] Use setup project for login state (`auth.setup.ts` - authenticate once)
+    - [x] Use setup project for login state (`auth.setup.ts` - authenticate
+          once)
     - [x] Use Page Object Model (`Sidenav` fixture for reusable interactions)
     - [x] Use auto-retrying assertions (no arbitrary waits)
   - **Unit Tests (Jest)**:
