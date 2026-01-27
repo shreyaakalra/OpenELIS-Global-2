@@ -32,6 +32,8 @@
   <include relativeToChangelogFile="true" file="022-add-patient-merge-menu-localization.xml"/>
   <!-- Add device connectivity fields for network-connected storage equipment -->
   <include relativeToChangelogFile="true" file="023-storage-device-connectivity.xml"/>
+  <!-- Add storage subnav items for sample items and locations tabs -->
+  <include relativeToChangelogFile="true" file="001-add-storage-subnav-items.xml"/>
   <!-- Freezer monitoring - formerly 011 (renumbered to avoid duplicate sequence) -->
   <include relativeToChangelogFile="true" file="024-freezer-monitoring-schema.xml"/>
   <include relativeToChangelogFile="true" file="generic-program-menu.xml"/>
