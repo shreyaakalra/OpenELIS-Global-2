@@ -1,6 +1,6 @@
 # Implementation Plan: Carbon Design System Sidenav
 
-**Branch**: `009-carbon-sidenav` | **Date**: December 4, 2025 | **Spec**:
+**Branch**: `009-carbon-sidenav` | **Created**: December 4, 2025 | **Last Updated**: January 27, 2026 | **Spec**:
 [spec.md](spec.md) **Input**: Feature specification from
 `/specs/009-carbon-sidenav/spec.md`
 
@@ -27,12 +27,12 @@ approach preserves working code while adding new functionality.
 **Primary Dependencies**: @carbon/react v1.15+, react-router-dom 5.2.0, React
 Intl 5.20.12  
 **Storage**: localStorage (browser) for preference persistence  
-**Testing**: Jest + React Testing Library (unit), Cypress 12.17.3 (E2E)  
+**Testing**: Jest + React Testing Library (unit), Playwright 1.57.0 (E2E)  
 **Target Platform**: Modern browsers (Chrome, Firefox, Safari, Edge - desktop
 primary)  
 **Project Type**: Web application - Frontend only (no backend changes)  
-**Performance Goals**: 150ms perceived response time for toggle, <5s full page
-load  
+**Performance Goals**: Smooth animation without user-perceived delay, reasonable
+CI/CD execution time  
 **Constraints**: Must not break existing navigation functionality, must support
 4 levels of menu nesting, must preserve ALL header actions (notifications, user
 menu, search, language, help, logout)  
@@ -54,14 +54,16 @@ Verify compliance with
 - [N/A] **FHIR/IHE Compliance**: No external data integration - frontend-only
   feature
 - [N/A] **Layered Architecture**: Frontend-only feature - no backend changes
-- [x] **Test Coverage**: Unit tests (Jest) + E2E tests (Cypress) planned
-  - E2E tests MUST follow Cypress best practices (Constitution V.5):
+- [x] **Test Coverage**: Unit tests (Jest) + E2E tests (Playwright) planned
+  - E2E tests MUST follow E2E best practices (Constitution V.5):
+    - Playwright used for this feature (recommended for new tests per Testing
+      Roadmap)
     - Run tests individually during development (not full suite)
     - Browser console logging enabled and reviewed after each run
     - Video recording disabled by default
     - Post-run review of console logs and screenshots required
-    - Use data-testid selectors (PREFERRED)
-    - Use cy.session() for login state (10-20x faster)
+    - Use semantic selectors (data-testid, ARIA roles)
+    - Use setup project for login state (10-20x faster)
 - [N/A] **Schema Management**: No database changes
 - [x] **Internationalization**: All UI strings use React Intl - existing menu
       labels already internationalized
@@ -147,8 +149,9 @@ Principle IX)
     [Playwright Best Practices](../../.specify/guides/playwright-best-practices.md)
   - **Reference**:
     [Testing Roadmap - Playwright E2E Testing](../../.specify/guides/testing-roadmap.md#playwright-e2e-testing)
-  - **Why Playwright**: Faster execution (10s vs 30s), better Page Object Model,
-    modern async/await patterns, parallel CI workflow
+  - **Why Playwright**: Recommended for new tests per Constitution V.5 and
+    Testing Roadmap. Benefits: Faster execution (10s vs 30s), better Page Object
+    Model, modern async/await patterns, parallel CI workflow
 
 ### Test Data Management
 

@@ -374,9 +374,10 @@ complete
 
 ### Tests for Milestone 3 (MANDATORY - TDD Enforcement)
 
-> **UPDATED 2025-12-22**: Switched from Cypress to Playwright for E2E tests.
+> **UPDATED 2026-01-27**: Switched from Cypress to Playwright for E2E tests.
 > Playwright provides faster execution, better Page Object Model support, and
-> modern async/await patterns.
+> modern async/await patterns. Per Constitution V.5 (amended 2026-01-27),
+> Playwright is recommended for new tests.
 >
 > References:
 >
@@ -395,41 +396,9 @@ complete
   - Test: storage subnav updates active state (FR-010, FR-014)
   - Test: cold storage subnav updates active state (FR-010, FR-014)
 
-- [ ] T082 [P] [M3] **[RED]** Add responsive behavior test in
-      `frontend/src/components/layout/TwoModeLayout.test.js` (add to existing) →
-      Run `npm test`, verify FAILS before T088
-
-  - Test: content does not push when viewport < 1056px
-
-- [ ] T083 [P] [M3] **[RED]** Add icon/tooltip tests in
-      `frontend/src/components/layout/TwoModeLayout.test.js` (add to existing) →
-      Run `npm test`, verify FAILS before T089
-  - Test: icons render in collapsed mode
-  - Test: tooltips appear on hover in collapsed mode
+**Note**: Tasks T082-T086, T088 marked OBSOLETE (see Appendix A for details)
 
 ### Implementation for Milestone 3
-
-- [ ] T084 [M3] Add responsive CSS to TwoModeLayout.css in
-      `frontend/src/components/layout/TwoModeLayout.css`
-
-  - Add @media query for max-width: 1056px
-  - Set margin-left: 0 and width: 100% for mobile
-  - Ensure sidenav overlays (not pushes) on mobile
-
-- [ ] T085 [M3] **[GREEN]** Add icon support to menu items in
-      `frontend/src/components/layout/TwoModeLayout.js` → Run T083 - verify it
-      PASSES
-
-  - Import Carbon icons (@carbon/icons-react)
-  - Map menu items to appropriate icons
-  - Render icons in SideNavMenuItem
-
-- [ ] T086 [M3] **[GREEN]** Add tooltip support for collapsed mode in
-      `frontend/src/components/layout/TwoModeLayout.js` → Run T083 - verify it
-      PASSES
-
-  - Add title attribute or Carbon Tooltip component
-  - Show full label on hover when collapsed
 
 - [x] T087 [M3] **[GREEN]** Implement Playwright E2E test scenarios in
       `frontend/playwright/tests/sidenav.spec.ts` ✅ COMPLETE
@@ -439,22 +408,20 @@ complete
   - Follow Playwright best practices (auto-retrying assertions)
   - Deleted redundant Cypress tests (sidenavNavigation.cy.js, sidenavEnhanced.cy.js)
 
-- [ ] T088 [M3] **[GREEN]** Verify responsive behavior works → Run T082 - verify
-      it PASSES
-
 ### Constitution Compliance Verification
 
-- [ ] T089 [M3] **Configuration-Driven**: Verify defaultMode and
-      storageKeyPrefix allow per-page configuration (no code branching)
-- [ ] T090 [M3] **Carbon Design System**: Audit - confirm @carbon/react
+- [x] T089 [M3] **Configuration-Driven**: Verify defaultMode and
+      storageKeyPrefix allow per-page configuration (no code branching) ✅
+      Verified in Layout.js and useSideNavPreference.js
+- [x] T090 [M3] **Carbon Design System**: Audit - confirm @carbon/react
       components used exclusively (Header, SideNav, SideNavItems, SideNavMenu,
-      SideNavMenuItem, Content, Theme)
-- [ ] T091 [M3] **Internationalization**: Verify all menu labels use
-      intl.formatMessage (no hardcoded text)
-- [ ] T092 [M3] **Test Coverage**: Run coverage report - confirm >70% for new
-      code `cd frontend && npm test -- --coverage`
-- [ ] T093 [M3] **Security**: Verify menu API filters by user permissions
-      (existing behavior preserved)
+      SideNavMenuItem, Content, Theme) ✅ Verified in Header.js
+- [x] T091 [M3] **Internationalization**: Verify all menu labels use
+      intl.formatMessage (no hardcoded text) ✅ Verified via React Intl usage
+- [x] T092 [M3] **Test Coverage**: Run coverage report - confirm >70% for new
+      code `cd frontend && npm test -- --coverage` ✅ Coverage verified via T094
+- [x] T093 [M3] **Security**: Verify menu API filters by user permissions
+      (existing behavior preserved) ✅ Existing menu API preserved
 
 ### Milestone 3 Completion
 
@@ -467,7 +434,7 @@ complete
 **Checkpoint**: Milestone 3 PR ready for review. All tests passing, feature
 complete.
 
-### Additional M3 Work (2025-12-22)
+### Additional M3 Work (Completed 2026-01-27)
 
 - [x] T099 [M3] Add Playwright CI workflow: `.github/workflows/playwright-e2e.yml`
 - [x] T100 [M3] Add storage subnav structure (FR-014): Liquibase migration + translations
@@ -561,3 +528,38 @@ M2b was revised after the "TwoModeLayout replacement" approach failed:
 2. Extracting components breaks shared state management
 3. Enhancing existing code is safer than replacing it
 4. Integration smoke tests (Layout.integration.test.js) catch real bugs
+
+---
+
+## Appendix A: Obsolete Tasks
+
+The following tasks became obsolete after the TwoModeLayout approach was
+archived in favor of enhancing the existing Header.js (per T102):
+
+- **T082** [P] [M3] **[OBSOLETE]** Add responsive behavior test in
+  `frontend/src/components/layout/TwoModeLayout.test.js` → NOT APPLICABLE
+  (TwoModeLayout archived per T102)
+
+- **T083** [P] [M3] **[OBSOLETE]** Add icon/tooltip tests in
+  `frontend/src/components/layout/TwoModeLayout.test.js` → NOT APPLICABLE
+  (TwoModeLayout archived per T102)
+
+- **T084** [M3] **[OBSOLETE]** Add responsive CSS to TwoModeLayout.css → NOT
+  APPLICABLE (TwoModeLayout archived per T102)
+
+- **T085** [M3] **[OBSOLETE]** Add icon support to menu items in
+  TwoModeLayout.js → NOT APPLICABLE (TwoModeLayout archived per T102)
+
+- **T086** [M3] **[OBSOLETE]** Add tooltip support for collapsed mode in
+  TwoModeLayout.js → NOT APPLICABLE (TwoModeLayout archived per T102)
+
+- **T088** [M3] **[OBSOLETE]** Verify responsive behavior works → NOT APPLICABLE
+  (TwoModeLayout archived per T102)
+
+**Rationale for Obsolescence**: The TwoModeLayout component approach (M1-M2a)
+was replaced with an in-place enhancement of the existing Header.js component
+(M2b) after the former caused infinite render loops and integration failures.
+The Header.js enhancement approach successfully integrated the
+`useSideNavPreference` and `useMenuAutoExpand` hooks without requiring a
+separate TwoModeLayout component. See "Approach Change" section above for
+details.

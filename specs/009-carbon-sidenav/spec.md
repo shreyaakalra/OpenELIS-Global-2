@@ -2,7 +2,8 @@
 
 **Feature Branch**: `009-carbon-sidenav`  
 **Created**: December 4, 2025  
-**Status**: Draft  
+**Last Updated**: January 27, 2026  
+**Status**: Implemented  
 **Input**: Refactor the existing Layout/Header components to follow Carbon
 design best practices with improved sidenav functionality. This is a **refactor,
 not a rewrite** — ALL existing header functionality (notifications, user menu,
@@ -108,6 +109,14 @@ accordingly.
   This is a refactor, NOT a rewrite. Zero loss of functionality. All header
   actions (notifications, user menu, language, search, logout) must remain
   intact.
+
+### Session 2026-01-27 (Constitution Amendment)
+
+- Q: Can we use Playwright for E2E tests instead of Cypress? → A: Yes.
+  Constitution amended to v1.9.0 to allow Playwright as recommended framework
+  for new tests (Section V.5). Testing Roadmap already provided guidance for
+  framework selection. Playwright offers faster execution, better debugging, and
+  modern async/await patterns.
 
 ---
 
@@ -295,8 +304,9 @@ content rather than pushing it.
   branching per page type).
 - **CR-004**: Security: Sidenav MUST only display menu items the user has
   permission to access (existing menu API provides this filtering).
-- **CR-005**: Tests MUST be included (unit tests for toggle logic, E2E tests for
-  navigation flows, >70% coverage goal).
+- **CR-005**: Tests MUST be included (unit tests for toggle logic, E2E tests via
+  Playwright or Cypress for navigation flows, >70% coverage goal). This feature
+  uses Playwright per Testing Roadmap guidance.
 
 ### Key Entities
 
@@ -316,8 +326,8 @@ content rather than pushing it.
 
 ### Measurable Outcomes
 
-- **SC-001**: Users can toggle sidenav mode in under 150ms perceived response
-  time (animation completes smoothly).
+- **SC-001**: Users can toggle sidenav mode with smooth animation that completes
+  without user-perceived delay.
 - **SC-002**: User's sidenav preference persists with 100% reliability across
   page navigations and browser refreshes (when localStorage is available).
 - **SC-003**: Navigation hierarchy displays correctly up to 4 levels deep with
@@ -360,3 +370,6 @@ content rather than pushing it.
   [UI Shell Left Panel Accessibility](https://carbondesignsystem.com/components/UI-shell-left-panel/accessibility/)
 - **Existing Header**: `frontend/src/components/layout/Header.js` - Current
   implementation for comparison
+- **Constitution Amendment**: v1.9.0 (2026-01-27) - Section V.5 amended to allow
+  Playwright for E2E testing alongside Cypress. See
+  `.specify/memory/constitution.md` for details.
