@@ -87,7 +87,7 @@ Carbon Design System patterns we are trying to introduce.
 
 ### Phase 3: Verification
 
-1. **Automated E2E**: Run the new `sidenavNavigation.cy.js` to prove the state
+1. **Automated E2E**: Run `npm run pw:test sidenav.spec.ts` (playwright/tests/sidenav.spec.ts) to prove the state
    sync works without reloading.
 2. **Manual Check**: Verify Storage defaults to locked, Home defaults to closed.
 
@@ -181,8 +181,7 @@ should be a dumb presentational component for the Layout's state.
 
 1.  ✅ Unit tests passing:
     `npm test -- --testPathPattern="(Header.test|Layout.integration)"` (14/14).
-2.  ⏳ E2E test: `npx cypress run --spec "cypress/e2e/sidenavNavigation.cy.js"`
-    (requires backend running).
+2.  ⏳ E2E test: `npm run pw:test sidenav.spec.ts` (requires backend running).
 
 **Manual Browser Testing Required:**
 

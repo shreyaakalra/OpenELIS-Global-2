@@ -170,7 +170,7 @@ Principle IX)
 ### Checkpoint Validations
 
 - [x] **After Phase 4 (Frontend)**: Frontend unit tests (Jest) AND E2E tests
-      (Cypress) must pass
+      (Playwright) must pass
 
 ### TDD Workflow
 
@@ -215,9 +215,9 @@ frontend/
 │   │       └── index.js               # KEEP - Exports for layout components
 │   └── pages/
 │       └── [existing pages]
-├── cypress/
-│   └── e2e/
-│       └── sidenavNavigation.cy.js    # NEW - E2E tests for sidenav
+├── playwright/
+│   └── tests/
+│       └── sidenav.spec.ts           # E2E tests for sidenav
 └── package.json
 ```
 

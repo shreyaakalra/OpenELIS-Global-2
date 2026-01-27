@@ -192,7 +192,7 @@ npm test -- --testPathPattern="TwoModeLayout"
 
 ```bash
 # Individual test file (recommended during development)
-npm run cy:run -- --spec "cypress/e2e/sidenavNavigation.cy.js"
+npm run pw:test sidenav.spec.ts
 ```
 
 ### Manual Testing Checklist
@@ -215,7 +215,7 @@ npm run cy:run -- --spec "cypress/e2e/sidenavNavigation.cy.js"
 | `frontend/src/components/layout/useMenuAutoExpand.js`       | Route-based menu auto-expansion  |
 | `frontend/src/components/layout/Layout.integration.test.js` | Critical smoke tests             |
 | `frontend/src/components/Style.css`                         | Lock mode content margin CSS     |
-| `frontend/cypress/e2e/sidenavNavigation.cy.js`              | E2E tests                        |
+| `frontend/playwright/tests/sidenav.spec.ts`                 | E2E tests                        |
 
 ## Reference Documentation
 
