@@ -27,7 +27,7 @@ test.describe("Navbar (Header) actions", () => {
     await expect(page.locator("#notification-Icon")).toBeVisible();
 
     await page.locator("#notification-Icon").click();
-    await expect(page.getByText("Notifications")).toBeVisible();
+    await expect(page.locator('.slide-over-title', { hasText: 'Notifications' })).toBeVisible();
   });
 
   test("user icon opens user panel (logout + language selector visible)", async ({

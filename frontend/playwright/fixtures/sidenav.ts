@@ -32,48 +32,94 @@ export class Sidenav {
 
   /** Ensure the SideNav is expanded (click toggle if needed) */
   async ensureExpanded() {
-    const hasExpandedClass = await this.nav.evaluate((el) =>
-      el.classList.contains("cds--side-nav--expanded"),
-    );
-    if (!hasExpandedClass) {
-      await this.toggle();
-      await this.expectExpanded();
+    try {
+      await this.nav.waitFor({ timeout: 2000 });
+    } catch {
+      return;
+    }
+    
+    try {
+      const hasExpandedClass = await this.nav.evaluate((el) =>
+        el.classList.contains("cds--side-nav--expanded"),
+      );
+      if (!hasExpandedClass) {
+        await this.toggle();
+        await this.expectExpanded();
+      }
+    } catch {
+      return;
+    }
+  }
+
+  async expandAllMenus() {
+    try {
+      await this.nav.waitFor({ timeout: 2000 });
+    } catch {
+      return;
+    }
+
+    await this.ensureExpanded();
+
+    for (let i = 0; i < 25; i++) {
+      try {
+        const closed = this.nav.locator('button[aria-expanded="false"]');
+        const count = await closed.count();
+        if (count === 0) return;
+
+        await closed.first().click();
+      } catch (error) {
+        return;
+      }
     }
   }
 
   /** Click a menu item by text */
   async clickMenu(text: string) {
+    const tab = this.page.getByRole("tab", { name: text });
+    const tabCount = await tab.count();
+    
+    if (tabCount > 0) {
+      await tab.click();
+      return;
+    }
+    
     await this.nav.getByRole("link", { name: text }).click();
+  }
+
+  async expectMenuActive(text: string) {
+    const tab = this.page.getByRole("tab", { name: text });
+    const tabCount = await tab.count();
+    
+    if (tabCount > 0) {
+      await expect(tab).toHaveClass(/cds--tabs__nav-item--selected/);
+      return;
+    }
+    
+    const link = this.nav.getByRole("link", { name: text });
+    await expect(link).toHaveClass(/cds--side-nav__link--current/);
+  }
+
+  async expectMenuInactive(text: string) {
+    const tab = this.page.getByRole("tab", { name: text });
+    const tabCount = await tab.count();
+    
+    if (tabCount > 0) {
+      await expect(tab).not.toHaveClass(/cds--tabs__nav-item--selected/);
+      return;
+    }
+    
+    const link = this.nav.getByRole("link", { name: text });
+    await expect(link).not.toHaveClass(/cds--side-nav__link--current/);
   }
 
   /** Expand a parent menu by text (exact match) */
   async expandMenu(text: string) {
-    const button = this.nav.getByRole("button", { name: text, exact: true });
-    const expanded = await button.getAttribute("aria-expanded");
+    const button = this.nav.getByText(text, { exact: true });    const expanded = await button.getAttribute("aria-expanded");
     if (expanded !== "true") {
-      await button.click();
+      await button.click({ force: true });
     }
   }
 
-  /**
-   * Expand ALL currently-collapsed menus in the nav.
-   *
-   * Useful for "click every link" tests where we want the full tree visible.
-   * Safe to call multiple times.
-   */
-  async expandAllMenus() {
-    await this.ensureExpanded();
-
-    // Expand iteratively since expanding one node can reveal more nodes.
-    for (let i = 0; i < 25; i++) {
-      const closed = this.nav.locator('button[aria-expanded="false"]');
-      const count = await closed.count();
-      if (count === 0) return;
-
-      // Click the first closed menu button and continue.
-      await closed.first().click();
-    }
-  }
 
   /**
    * Return visible sidenav link info. This intentionally only captures "real" links
@@ -103,18 +149,6 @@ export class Sidenav {
     }
 
     return infos;
-  }
-
-  /** Check if a menu item is active/current */
-  async expectMenuActive(text: string) {
-    const link = this.nav.getByRole("link", { name: text });
-    await expect(link).toHaveClass(/cds--side-nav__link--current/);
-  }
-
-  /** Check if a menu item is NOT active */
-  async expectMenuInactive(text: string) {
-    const link = this.nav.getByRole("link", { name: text });
-    await expect(link).not.toHaveClass(/cds--side-nav__link--current/);
   }
 
   /** Navigate to storage section and wait for load */

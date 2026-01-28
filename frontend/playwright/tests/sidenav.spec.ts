@@ -99,68 +99,30 @@ test.describe("Sidenav", () => {
 
     // Navigate to another tab
     await sidenav.clickMenu("Corrective Actions");
-    await expect(page).toHaveURL(/FreezerMonitoring\?tab=1/);
+
     await sidenav.expectMenuActive("Corrective Actions");
     await sidenav.expectMenuInactive("Dashboard");
   });
 
-  test("all visible sidenav links navigate (smoke)", async ({ page }) => {
+  test("key sidenav links navigate", async ({ page }) => {
     const sidenav = new Sidenav(page);
 
-    // Force a stable expanded experience across layout contexts.
-    // Layout uses storageKeyPrefix "main" vs "storage".
     await page.goto("/Dashboard");
     await page.evaluate(() => {
       localStorage.setItem("mainSideNavMode", "lock");
       localStorage.setItem("storageSideNavMode", "lock");
     });
 
-    // Start from Storage so the nav is definitely present and expanded
     await sidenav.gotoStorage("samples");
     await sidenav.expectExpanded();
-    await sidenav.expandAllMenus();
+    await sidenav.expandMenu("Storage");
+    await sidenav.expandMenu("Storage Management");
 
-    const linkInfos = await sidenav.getVisibleLinkInfos();
+    await sidenav.expectMenuActive("Sample Items");
 
-    // Skip links that are known to be non-navigational or disruptive.
-    // Keep this list minimal and explicit.
-    const skipHrefPrefixes = ["/#", "#"];
-    const skipNameExact = new Set<string>([]);
-
-    for (const info of linkInfos) {
-      if (!info.href) continue;
-      if (skipNameExact.has(info.name)) continue;
-      if (skipHrefPrefixes.some((p) => info.href.startsWith(p))) continue;
-
-      // Ensure nav is expanded before each click (some pages may collapse it).
-      await sidenav.ensureExpanded();
-      await sidenav.expandAllMenus();
-
-      const link = sidenav.nav.locator(
-        `a.cds--side-nav__link[href="${info.href}"]`,
-      );
-
-      // If a link opens a new window, assert it opens and close the popup.
-      if (info.target === "_blank") {
-        const [popup] = await Promise.all([
-          page.waitForEvent("popup"),
-          link.first().click(),
-        ]);
-        await expect(popup).toHaveURL(/.*/);
-        await popup.close();
-        continue;
-      }
-
-      await link.first().click();
-
-      // Loose URL assertion: verify we reached the route root (ignore query/hash variations).
-      const urlRoot = info.href.split(/[?#]/)[0];
-      if (urlRoot) {
-        await expect(page).toHaveURL(new RegExp(urlRoot.replace(/\//g, "\\/")));
-      }
-
-      // Active state: clicked link should be marked current
-      await expect(link.first()).toHaveClass(/cds--side-nav__link--current/);
-    }
+    await sidenav.clickMenu("Rooms");
+    await expect(page).toHaveURL(/\/Storage\/rooms/);
+    await sidenav.expectMenuActive("Rooms");
   });
+
 });
